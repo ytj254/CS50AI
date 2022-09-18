@@ -12,22 +12,45 @@ CKnave = Symbol("C is a Knave")
 # Puzzle 0
 # A says "I am both a knight and a knave."
 knowledge0 = And(
-    # TODO
-)
+    Or(AKnight, AKnave),
+    Not(And(AKnight, AKnave)),
+
+    # inference from A
+    Implication(AKnight, And(AKnight, AKnave)),
+    Implication(AKnave, Not(And(AKnight, AKnave))),
+    )
 
 # Puzzle 1
 # A says "We are both knaves."
 # B says nothing.
 knowledge1 = And(
-    # TODO
-)
+    Or(AKnight, AKnave),
+    Not(And(AKnight, AKnave)),
+    Or(BKnight, BKnave),
+    Not(And(BKnight, BKnave)),
+
+    # inference from A
+    Implication(AKnight, And(AKnave, BKnave)),
+    Implication(AKnave, Not(And(AKnave, BKnave))),
+    )
 
 # Puzzle 2
 # A says "We are the same kind."
 # B says "We are of different kinds."
 knowledge2 = And(
-    # TODO
-)
+    Or(AKnight, AKnave),
+    Not(And(AKnight, AKnave)),
+    Or(BKnight, BKnave),
+    Not(And(BKnight, BKnave)),
+
+    # inference from A
+    Implication(AKnight, Or(And(AKnight, BKnight), And(AKnave, BKnave))),
+    Implication(AKnave, Not(Or(And(AKnight, BKnight), And(AKnave, BKnave)))),
+
+    # inference from B
+    Implication(BKnight, Or(And(AKnight, BKnave), And(AKnave, BKnight))),
+    Implication(BKnave, Not(Or(And(AKnight, BKnave), And(AKnave, BKnight))))
+    )
 
 # Puzzle 3
 # A says either "I am a knight." or "I am a knave.", but you don't know which.
@@ -35,8 +58,27 @@ knowledge2 = And(
 # B says "C is a knave."
 # C says "A is a knight."
 knowledge3 = And(
-    # TODO
-)
+    Or(AKnight, AKnave),
+    Not(And(AKnight, AKnave)),
+    Or(BKnight, BKnave),
+    Not(And(BKnight, BKnave)),
+    Or(CKnight, CKnave),
+    Not(And(CKnight, CKnave)),
+
+    # inference from A
+    Implication(AKnight, And(Or(AKnight, AKnave), Not(And(AKnight, AKnave)))),
+    Implication(AKnave, Not(And(Or(AKnight, AKnave), Not(And(AKnight, AKnave))))),
+
+    # inference from B
+    Implication(BKnight, And(Implication(AKnight, AKnave), Implication(AKnave, Not(AKnave)))),
+    Implication(BKnave, Not(And(Implication(AKnight, AKnave), Implication(AKnave, Not(AKnave))))),
+    Implication(BKnight, CKnave),
+    Implication(BKnave, Not(CKnave)),
+
+    # inference from C
+    Implication(CKnight, AKnight),
+    Implication(CKnave, Not(AKnight))
+    )
 
 
 def main():
@@ -58,4 +100,5 @@ def main():
 
 
 if __name__ == "__main__":
+
     main()
