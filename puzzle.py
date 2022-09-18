@@ -98,7 +98,6 @@ def main():
                 if model_check(knowledge, symbol):
                     print(f"    {symbol}")
 
-
 if __name__ == "__main__":
 
     main()
